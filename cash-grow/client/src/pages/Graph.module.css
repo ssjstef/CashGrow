@@ -1,0 +1,21 @@
+.graphPage{
+    display: flex;
+    flex-direction: column;
+}
+.graphBox {
+    display: flex;
+    justify-content: space-around;
+}
+
+.graphAreaOne{
+    display: flex;
+}
+
+.verticalRule{
+    border-left: 3px solid black;
+    height: 50em;
+}
+
+.heading{
+    border: solid black;
+}

@@ -1,0 +1,69 @@
+body{
+  background: hsl(85, 67%, 78%);
+  margin: 0;
+  padding: 0;
+}
+
+.buttonBox{
+  align-content:center;
+  border: 3px solid black;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  place-items: center;
+}
+
+.startPage{
+  display:flex;
+  padding-top: 2%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.treeContainer{
+  display:flex;
+  width: auto;
+  height: auto;
+  justify-content: center;
+}
+
+.treePicture{
+  border-radius: 15px;
+  opacity: 0.8;
+  object-fit: contain;
+}
+
+/* .logo-box{
+  display:flex;
+  background-color: hsl(100, 74%, 27%);
+  border-radius: 15px;
+  justify-content: center;
+  color: white;
+  padding-left: 1%;
+  padding-right: 1%;
+} */
+
+.logoContainer{
+  display: flex;
+  flex-direction:  row;
+  justify-content: center;
+  align-items:flex-start;
+  margin: 0 auto;
+}
+
+.logo{
+  height: 8em;
+  border-radius: 10px;    
+}
+
+.navbar{
+  background-color: hsl(0, 0%, 50%, 0.911);
+  color: black;
+  width: 20%;
+}
+
+/* Stuff for the other page */
+
+
+
+

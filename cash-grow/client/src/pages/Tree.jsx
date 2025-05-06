@@ -1,0 +1,157 @@
+import Tree1 from "../assets/Trees/Tree1.png";
+import Tree2 from "../assets/Trees/Tree2.png";
+import Tree3 from "../assets/Trees/Tree3.png";
+import Tree4 from "../assets/Trees/Tree4.png";
+import Tree5 from "../assets/Trees/Tree5.png";
+import Tree6 from "../assets/Trees/Tree6.png";
+import Tree7 from "../assets/Trees/Tree7.png";
+import Tree8 from "../assets/Trees/Tree8.png";
+import Tree9 from "../assets/Trees/Tree9.png";
+
+
+
+import { getWeeklySpendingData, getWeekStartDate } from "../graph/LineGraph";
+import AuthContext from "../context/AuthProvider";
+import { useContext, useState, useEffect } from "react";
+import NavBar from "../components/NavBar";
+import axios from "axios";
+
+function Tree() {
+
+    const scheme = {
+        1: Tree1,
+        2: Tree2,
+        3: Tree3,
+        4: Tree4,
+        5: Tree5,
+        7: Tree6,
+        10: Tree7,
+        15: Tree8,
+        20: Tree9
+    }
+
+    const treeImages = {
+        0: Tree1,
+        1: Tree2,
+        2: Tree3,
+        3: Tree4,
+        4: Tree5,
+        5: Tree1,
+    };
+
+
+    const { auth, setAuth } = useContext(AuthContext);
+
+    const [ tree, setTree ] = useState();
+
+    const [ userData, setUserData ] = useState([]);
+
+    const [ loading, setLoading ] = useState(true);
+
+    const [ budget, setBudget] = useState();
+
+    const [ score, setScore ] = useState();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const res = await axios.get("http://localhost:8080/userdata", {
+                    headers: {
+                        Authorization: `Bearer ${auth.accessToken}`
+                    }
+                })
+                const finances = res.data.finances;
+                const budget = res.data.budget;
+
+                setUserData(finances);
+                setBudget(budget);
+
+            }catch (err){
+                console.error("Fetch failed", err);
+            }finally{
+                setLoading(false);
+            }
+        ;}
+
+        if(auth?.accessToken) {
+        fetchUserData();
+        }else{
+            console.log("no game boss")
+        }
+
+    }, [auth]);
+
+    useEffect(() => {
+        setScore(calculateBudgetingSuccess(userData, budget));
+        console.log(score);
+    },[userData]);
+
+
+    return (
+        <div className="treeContainer">
+        <NavBar/>
+        <img className="treePicture"
+        src={treeImages[score] || treeImages[5]} //Five is the standard
+        style={{ width: "auto", height: "auto" }}
+        />
+        <div>
+        <p>{auth?.user?.idUser}</p>
+        <p>{}</p>
+        </div>
+        </div>
+        );
+}
+
+function calculateBudgetingSuccess(userData, budget){
+
+    //Get Weekly spending, gets all of the weeks and their starting date, which could then be ordered?
+        //Then you can go through array of sorted dates and see how far you can go before a fail is found, that
+            //is the success rate
+
+        //I do not have user data here at the moment need to get it. (not sure if it worth another API call) - made it, might be better to add it to auth
+
+    const weeklySpending = getWeeklySpendingData(userData, budget);
+
+    //This is all of the data, need to figure out if this is ordered or not
+    let score = 0;
+
+    for(let i; i < weeklySpending.length;i++){
+
+        if(weeklySpending.spent <= budget){
+            score++;
+        }else{
+            score--;
+        }
+    }
+
+    return score;
+}
+
+function treeSelector(score){
+
+    if(score >= 0){
+        if(score(!(scheme))){
+            const treeBefore = ''; //Need to figure out assigning of tree before 
+            setTree(handleGeneration(treeBefore)); //Want this bit to rreturn the closest smallest value to the one that I have
+        }
+    }
+
+}
+
+//might also be good to pass difference to the tree, this could be added to make understand the scale ?? Maybe to be added later
+async function handleGeneration(treeImgPath){
+
+    const data = new FormData;
+    data.append(treeImgPath);
+
+    try{
+        const generatedTree = await axios.post("http://localhost:8080/imagecreation", data);
+        //Will have to deal with headers to make sure that the back end knows it is dealing with an image
+    }catch(err){
+        consnole.error("There was an error:", err);
+    }
+
+    return generatedTree;
+}
+
+export default Tree;
