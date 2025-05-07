@@ -9,6 +9,7 @@
 
 .graphAreaOne{
     display: flex;
+    background-color: #d8d1cf1f;
 }
 
 .verticalRule{
@@ -18,4 +19,9 @@
 
 .heading{
     border: solid black;
+}
+
+.graph{
+    background-color: #cfc7c586;
+
 }

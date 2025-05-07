@@ -1,5 +1,4 @@
 import styles from "./Graph.module.css";
-import ExtraGraph from "../graph/ExtraGraph";
 import {useState, useContext, useEffect} from "react";
 import  AuthContext  from "../context/AuthProvider";
 import axios from "axios";
@@ -20,8 +19,7 @@ function Graph(){
 
     const [ budget, setBudget] = useState();
 
-
-    const [graphChoice, setGraphChoice] = useState("barChart");
+    const [graphChoice, setGraphChoice] = useState("lineGraph");
 
     const changeGraph = (event) => {
         setGraphChoice(event.target.value);
@@ -81,24 +79,16 @@ function Graph(){
                         <option value="barChart">Bar Chart</option>
                         <option value="lineGraph">Line Graph</option>
                         <option value="pieChart">Pie Chart</option>
-                        <option value="stackedBarChart">Stacked Bar Chart</option>
+                        <option value="bubbleGraph">Bubble Graph</option>
                     </select>
 
                     <div className="graph">
                         {budget !== undefined && (
-                            //<PieChart userData={userData} userBudget={budget[0].Budget} />
-                            <LineGraph userData={userData} userBudget={budget[0].Budget}/>
-                            //<BubbleGraph userData={userData}/>
-                        
+                            renderGraph(graphChoice, userData, budget)
                         )}
                     </div> {/* Graph div end */}
 
                 </div> {/* End of GraphAreaOne */}
-            <div className={styles.verticalRule}>
-            </div> {/* Vertical Rule div end */}
-            <div className="optional-box">
-                <ExtraGraph/>
-            </div> {/* Optional-box  end */}
             </div> {/* Graph Box  end */}
             <div className="transaction-table">
                 <table>
@@ -135,8 +125,20 @@ function Graph(){
     )
 }
 
-function tableCreator() {
-    
+function renderGraph(graphChoice, userData, budget){
+
+    switch(graphChoice){
+        case "lineGraph":
+            return <LineGraph userData={userData} userBudget={budget[0].Budget}/>;
+        case "barChart":
+            return <BarChart userData={userData}/>
+        case "pieChart":
+            return <PieChart userData={userData} userBudget={budget[0].Budget}/>;
+        case "bubbleGraph":
+            return <BubbleGraph userData={userData}/>;
+        default:
+            return <LineGraph userData={userData} userBudget={budget[0].Budget}/>;
+        }
 }
 
 export default Graph;

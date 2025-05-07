@@ -21,28 +21,56 @@ const fakeUserData = [
 
     //Changed by GPT
 
-export function createBubbles(userData) {
-        const locationMap = new Map();
+    export function createBubbles(userData) {
+      const recipientMap = {};
+    
+      userData.forEach(entry => {
+        const recipient = entry.Recipient?.trim();  // sanitize string
+        const amount = parseFloat(entry.Amount);
+    
+        if (!recipient || isNaN(amount)) return;
+    
+        if (recipientMap[recipient]) {
+          recipientMap[recipient] += amount;
+        } else {
+          recipientMap[recipient] = amount;
+        }
+      });
+    
+      const children = Object.entries(recipientMap).map(([name, value]) => ({
+        name,
+        value: +value.toFixed(2), // round to 2 decimal places
+      }));
+    
+      return {
+        name: "root",
+        children
+      };
+    }
+
+
+// export function createBubbles(userData) {
+//         const locationMap = new Map();
       
-        userData.forEach(({ location, place }) => {
-          if (!locationMap.has(location)) {
-            locationMap.set(location, new Map());
-          }
+//         userData.forEach(({ location, place }) => {
+//           if (!locationMap.has(location)) {
+//             locationMap.set(location, new Map());
+//           }
       
-          const placeMap = locationMap.get(location);
-          placeMap.set(place, (placeMap.get(place) || 0) + 1);
-        });
+//           const placeMap = locationMap.get(location);
+//           placeMap.set(place, (placeMap.get(place) || 0) + 1);
+//         });
       
-        const children = Array.from(locationMap.entries()).map(([location, placeMap]) => ({
-          name: location,
-          children: Array.from(placeMap.entries()).map(([place, count]) => ({
-            name: place,
-            value: count,
-          }))
-        }));
+//         const children = Array.from(locationMap.entries()).map(([location, placeMap]) => ({
+//           name: location,
+//           children: Array.from(placeMap.entries()).map(([place, count]) => ({
+//             name: place,
+//             value: count,
+//           }))
+//         }));
       
-        return { name: "root", children };
-      }
+//         return { name: "root", children };
+//       }
 
 
 // export function createBubbles(userData){
