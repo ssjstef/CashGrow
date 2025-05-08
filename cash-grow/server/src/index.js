@@ -11,7 +11,7 @@ const multer = require("multer");
 const fs = require("fs");
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const main = require('./gemini');
+const gemini = require('./gemini');
 const bcrypt = require("bcrypt");
 
 
@@ -81,8 +81,21 @@ app.post("/csvupload", upload.single("csv"), (req, res) => {
 })
 
 const tree = multer({dest: "Uploads/"});
-app.post("/imagecreation", tree.single("image"), (req, res) => {
-    res.send(main(tree)); //might need the filepath? This is what was done above, should take some time to clean everything up and add it all to one place
+app.post("/imagecreation", tree.single("image"), async (req, res) => {
+    const filepath = req.file.path
+
+    try{
+        const imageBuffer = await gemini(filepath);
+
+        res.setHeader("Content-Type", "image/png");
+        res.send(imageBuffer);
+
+    }catch(error){
+        console.error("Gemini generation failed", error);
+        res.status(500).json("failed to generate the image");
+    }finally{
+        fs.unlinkSync(filepath); //cleaning up the generated image
+    }
 })
 
 app.post("/transactionsubmit", (req, res) => {
@@ -216,23 +229,3 @@ function authenticateToken(req, res, next){
 app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
   });
-
-  
-// app.get("/users", (req, res) => {
-//     pool.query(
-//         'SELECT * FROM User WHERE IdUser ="1000"',
-//         (err, rows, fields) => {
-//             if (err) {
-//                 console.error("Error fetching users:", err);
-//                 return res.status(500).json({ error: "Database error" });
-//             }
-//             else {
-//                 const user = rows[0];
-//                 res.json(user);
-//                 console.log('Users:', rows);
-//                 console.log(user.idUser)
-//             }
-//         }
-
-//     );
-//});

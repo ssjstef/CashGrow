@@ -4,8 +4,8 @@ import { createBubbles } from "./Data";
 
 function BubbleGraph({ userData }) {
   const svgRef = useRef();
-  const width = 400;
-  const height = 300;
+  const width = 1000;
+  const height = 1000;
 
   const color = d3.scaleLinear()
     .domain([0, 5])
@@ -24,6 +24,7 @@ function BubbleGraph({ userData }) {
     const svg = d3.select(svgRef.current).attr("viewBox", [0, 0, width, height]);
 
     const data = createBubbles(userData); // should return a nested structure: { name, children: [{name, value}] }
+    console.log(data);
     const root = pack(data);
     let focus = root;
     let view;
@@ -31,9 +32,10 @@ function BubbleGraph({ userData }) {
     const nodes = svg.append("g")
       .attr("class", "nodes")
       .selectAll("g")
+      .style("background", "f8f8f8")
       .data(root.descendants())
       .join("g")
-        .attr("transform", d => `translate(${d.x},${d.y})`);
+        .attr("transform", d => `translate(${d.x},${d.y})`); //Think this needs to be changed, the radius is starting from the wronf place
 
     const circle = nodes.append("circle")
       .attr("r", d => d.r)

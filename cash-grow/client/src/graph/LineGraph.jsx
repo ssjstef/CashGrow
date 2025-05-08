@@ -5,8 +5,8 @@ function LineGraph({ userData, userBudget }) {
   const svgRef = useRef();
 
   const weeklyData = getWeeklySpendingData(userData);
-  const width = 640;
-  const height = 400;
+  const width = 700;
+  const height = 500;
   const margin = { top: 20, right: 30, bottom: 40, left: 50 };
 
   // Parse data
@@ -51,16 +51,16 @@ function LineGraph({ userData, userBudget }) {
       .enter()
       .append("g")
         .attr("class", "legend")
-        .attr("transform", (d, i) => `translate(50, ${i * 20 + 20})`);
+        .attr("transform", (d, i) => `translate(50, ${i * 20})`);
     
     legend.append("rect")
-      .attr("x", width - 100)
+      .attr("x", width - 270)
       .attr("width", 12)
       .attr("height", 12)
       .style("fill", d => color(d));
     
     legend.append("text")
-      .attr("x", width - 80)
+      .attr("x", width - 250)
       .attr("y", 6)  
       .attr("dy", "0.35em")
       .style("text-anchor", "start")
