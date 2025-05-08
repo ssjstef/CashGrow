@@ -30,15 +30,6 @@ function Tree() {
         20: Tree9
     }
 
-    const treeImages = {
-        0: Tree1,
-        1: Tree2,
-        2: Tree3,
-        3: Tree4,
-        4: Tree5,
-        5: Tree1,
-    };
-
 
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -82,8 +73,9 @@ function Tree() {
     }, [auth]);
 
     useEffect(() => {
-        setScore(calculateBudgetingSuccess(userData, budget));
-        console.log(score);
+        const newScore = calculateBudgetingSuccess(userData, budget);
+        setScore(newScore);
+        console.log(newScore);
     },[userData]);
 
 
@@ -91,7 +83,7 @@ function Tree() {
         <div className="treeContainer">
         <NavBar/>
         <img className="treePicture"
-        src={treeImages[score] || treeImages[5]} //Five is the standard
+        src={scheme[score] || scheme[5]} //Five is the standard
         style={{ width: "auto", height: "auto" }}
         />
         <div>
@@ -115,11 +107,10 @@ function calculateBudgetingSuccess(userData, budget){
     //This is all of the data, need to figure out if this is ordered or not
     let score = 0;
 
-    for(let i; i < weeklySpending.length;i++){
-
-        if(weeklySpending.spent <= budget){
+    for (let i = 0; i < weeklySpending.length; i++) {
+        if (weeklySpending[i].spent <= budget) {
             score++;
-        }else{
+        } else {
             score--;
         }
     }
@@ -127,22 +118,38 @@ function calculateBudgetingSuccess(userData, budget){
     return score;
 }
 
-function treeSelector(score){
+function treeSelector(score, scheme){
 
     if(score >= 0){
-        if(score(!(scheme))){
-            const treeBefore = ''; //Need to figure out assigning of tree before 
+        if(score(!(id in scheem))){
+            const treeBefore = closestTreeScore(score, scheme); //Need to figure out assigning of tree before 
             setTree(handleGeneration(treeBefore)); //Want this bit to rreturn the closest smallest value to the one that I have
         }
     }
 
 }
 
+//Gets the tree with score just below the value the user score is, this can then be sent to the backend to generate a new tree.
+function closestTreeScore(score, scheme){
+    const keys = Object.keys(scheme).map(Number).sort((a, b) => a - b);
+    let closest = keys[0];
+    
+    for (let i = 0; i < keys.length; i++) {
+        if (score >= keys[i]) {
+            closest = keys[i];
+        } else {
+            break;
+        }
+    }
+    
+    return closest;
+    }
+
 //might also be good to pass difference to the tree, this could be added to make understand the scale ?? Maybe to be added later
 async function handleGeneration(treeImgPath){
 
     const data = new FormData;
-    data.append(treeImgPath);
+    data.append("image", treeImgPath);
 
     try{
         const generatedTree = await axios.post("http://localhost:8080/imagecreation", data);

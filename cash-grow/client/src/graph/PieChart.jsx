@@ -1,62 +1,3 @@
-// import { useState, useRef, useEffect, useContext} from 'react';
-// import  AuthContext from "../Context/AuthProvider";
-// import * as d3 from "d3"; 
-
-// function PieChart({userData, userBudget}){
-
-//     const svgRef = useRef();
-
-//     const weeklySpending = getWeeklySpending(userData);
-
-//     const height = Math.min(500, width / 2);
-//     const outerRadius = height / 2 - 10;
-//     const innerRadius = outerRadius * 0.75;
-//     const tau = 2 * Math.PI;
-//     const color = d3.scaleOrdinal(d3.schemeObservable10);
-
-//     const svg = d3.create("svg")
-//         .attr("viewBox", [-width/2, -height/2, width, height]);
-
-//     const arc = d3.arc()
-//         .innerRadius(innerRadius)
-//         .outerRadius(outerRadius);
-
-    
-//     const pie = d3.pie().sort(null).value([weeklySpending, userBudget - weeklySpending]); //Need to add the correct data in here
-
-
-//     return(
-//         <svg ref={svgRef}/>
-//     )
-
-// }
-
-// //ChatGPT, get your own 
-// function getWeeklySpending(userData) {
-//     const today = new Date();
-//     const dayOfWeek = today.getDay();
-//     const diffToMonday = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
-//     const monday = new Date(today);
-//     monday.setDate(today.getDate() + diffToMonday);
-//     monday.setHours(0, 0, 0, 0);
-
-//     let totalSpent = 0;
-
-//     userData.forEach(transaction => {
-//         const transactionDate = new Date(transaction.Date);
-//         if (
-//             transactionDate >= monday &&
-//             transactionDate <= today
-//             //transaction.InOut.toLowerCase() === "out" //Watch out for this line it does not make sense at the moment.
-//         ) {
-//             totalSpent += parseFloat(transaction.Amount);
-//         }
-//     });
-
-//     return totalSpent;
-// }
-
-// export default PieChart;
 
 
 import { useRef, useEffect } from 'react';
@@ -71,11 +12,12 @@ function PieChart({ userData, userBudget }) {
             return;
         }
 
-        const width = 400;
-        const height = 400;
+        const width = 500;
+        const height = 500;
         const outerRadius = Math.min(width, height) / 2;
         const innerRadius = outerRadius * 0.6;
         const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const keys = ["Amount spent", "Amount remaining"];
 
         const weeklySpending = getWeeklySpending(userData);
 
@@ -110,11 +52,30 @@ function PieChart({ userData, userBudget }) {
             .append("title")
             .text(d => `${d.data.label}: ${d.data.value.toFixed(2)}`);
 
+        const legend = svg.selectAll(".legend")
+            .data(spendingData)
+            .enter()
+            .append("g")
+            .attr("class", "legend")
+            .attr("transform", (d, i) => `translate(${ -width / 2 + 10 }, ${ -height / 2 + i * 20 + 10 })`);
+        
+        legend.append("rect")
+            .attr("width", 12)
+            .attr("height", 12)
+            .style("fill", (d, i) => color(i));
+        
+        legend.append("text")
+            .attr("x", 18)
+            .attr("y", 6)
+            .attr("dy", "0.35em")
+            .style("text-anchor", "start")
+            .text(d => d.label);     
+
     }, [userData, userBudget]);
 
     return (
         <svg ref={svgRef}></svg>
-    );
+    );   
 }
 
 // Helper to calculate weekly spending

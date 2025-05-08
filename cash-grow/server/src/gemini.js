@@ -4,7 +4,7 @@ require('dotenv').config()
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fs = require("fs")
 
-function main(imagefile) {
+async function main(imagefile) {
   const ai = new genAi({ apiKey: "GOOGLE_API_KEY" });
 
   const base64ImageFile = fs.readFileSync(imagefile, {

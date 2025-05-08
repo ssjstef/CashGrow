@@ -109,6 +109,7 @@ export function getWeeklySpendingData(transactions) {
   const weekMap = new Map();
 
   transactions.forEach(tx => {
+    console.log(tx)
     const txDate = new Date(tx.Date);
     const monday = getWeekStartDate(txDate);
     const key = monday.toISOString().split("T")[0];

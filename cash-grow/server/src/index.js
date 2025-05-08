@@ -82,7 +82,7 @@ app.post("/csvupload", upload.single("csv"), (req, res) => {
 const tree = multer({dest: "Uploads/"});
 app.post("/imagecreation", tree.single("image"), async (req, res) => {
     const filepath = req.file.path
-
+    
     try{
         const imageBuffer = await gemini(filepath);
 

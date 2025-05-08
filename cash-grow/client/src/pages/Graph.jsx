@@ -76,8 +76,8 @@ function Graph(){
                 
 
                     <select name="graphs" id="graphs" onChange={changeGraph}>
-                        <option value="barChart">Bar Chart</option>
                         <option value="lineGraph">Line Graph</option>
+                        <option value="barChart">Bar Chart</option>
                         <option value="pieChart">Pie Chart</option>
                         <option value="bubbleGraph">Bubble Graph</option>
                     </select>
@@ -129,15 +129,40 @@ function renderGraph(graphChoice, userData, budget){
 
     switch(graphChoice){
         case "lineGraph":
-            return <LineGraph userData={userData} userBudget={budget[0].Budget}/>;
+            return (
+            <>
+                <h2>Budgeting Goal vs Amount Spent on a Weekly Basis</h2>
+                <LineGraph userData={userData} userBudget={budget[0].Budget}/>
+            </>
+            )
         case "barChart":
-            return <BarChart userData={userData}/>
+            return (
+            <>  
+                <h2>Amount Spent in the Last 10 Weeks Across All Categories</h2>
+                <BarChart userData={userData}/>
+            </>
+            )
         case "pieChart":
-            return <PieChart userData={userData} userBudget={budget[0].Budget}/>;
+            return (
+            <>
+                <h2>Amount Spent This Week Compared to Total Budget </h2>
+                <PieChart userData={userData} userBudget={budget[0].Budget}/>
+            </>
+            )
         case "bubbleGraph":
-            return <BubbleGraph userData={userData}/>;
+            return(
+            <>
+                <h2>Graph Showing Recipeints of Money</h2>
+                <BubbleGraph userData={userData}/>
+            </>
+            )
         default:
-            return <LineGraph userData={userData} userBudget={budget[0].Budget}/>;
+            return(
+            <>
+                <h2>Budgeting Goal vs Amount Spent on a Weekly Basis</h2>
+                <LineGraph userData={userData} userBudget={budget[0].Budget}/>
+            </>
+            )
         }
 }
 
