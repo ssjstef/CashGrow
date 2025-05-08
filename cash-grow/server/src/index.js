@@ -12,6 +12,7 @@ const fs = require("fs");
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const main = require('./gemini');
+const bcrypt = require("bcrypt");
 
 
 const PORT = process.env.PORT || 8080;
@@ -103,39 +104,72 @@ app.post("/transactionsubmit", (req, res) => {
 
 app.post("/login", (req,res) => {
     console.log("received request:", req.body);
-    const sql = "SELECT * FROM User WHERE Username = ? AND Password = ?";
+    const sql = "SELECT * FROM User WHERE Username = ?";
+    pwd = req.body.pwd;
     const values = [
-        req.body.user,
-        req.body.pwd
+        req.body.user
     ]
-    pool.query(sql, values, (err, data) =>  {
+    pool.query(sql, values, async (err, data) =>  {
         if (data.length === 0) {
             return res.status(401).json({ error: "Invalid username or password" });
         }
         if(err){
                 console.error("Login failed: ",  err);
         }
+        //Need to add the calidation
+
+        const validatePass = await bcrypt.compare(pwd, data[0].Password);
+
+        if (!validatePass){
+            return res.status(401).json({nessage: "Incorrect password"});
+        }
+
         const user = {idUser: data[0].idUser, username: data[0].Username};
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
         res.json({accessToken, user});
-            //This should get the user ID and work from now on?? 
+        
     }
     )
 })
 
 //could be a problem with the json
-app.post('/signup', (req, res) => {
-    const sql = "INSERT INTO User VALUES ?"
-    const username = req.body.username;
-    const password = req.body.password;
-    const values = [
-        req.body.username,
-        req.body.password,
-        req.body.budget
-    ]
+//Problem, cannot add the Budget into the table, need to get a return then add the id and the budget into the Budget table
+app.post('/signup', async (req, res) => {
+    const usersql = "INSERT INTO User(Username, Password) VALUES (?, ?)";
+    const budgetsql = "INSERT INTO Budget(idUser, Budget) VALUES (?, ?)";
+    const { username, password, budget } = req.body;
 
-    pool.query()
-})
+    try {
+        const hashed = await bcrypt.hash(password, 10);
+        const userValues = [username, hashed];
+
+        pool.query(usersql, userValues, (err, result) => {
+            if (err) {
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(409).json({ message: "Username already exists" });
+                }
+                console.error("User insert error:", err);
+                return res.status(500).json({ message: "User insert failed" });
+            }
+
+            const newId = result.insertId;
+
+            const budgetValues = [newId, budget];
+            pool.query(budgetsql, budgetValues, (budgetErr, budgetResult) => {
+                if (budgetErr) {
+                    console.error("Budget insert error:", budgetErr);
+                    return res.status(500).json({ message: "Budget insert failed" });
+                }
+
+                return res.status(201).json({ message: "User and budget created successfully" });
+            });
+        });
+
+    } catch (err) {
+        console.error("Hashing error:", err);
+        return res.status(500).json({ message: "Server error during hashing" });
+    }
+});
 
 app.get('/userdata', authenticateToken, (req, res) => {
     //Here we are going to return the data specific to the user using the token 
