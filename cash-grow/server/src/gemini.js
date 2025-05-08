@@ -2,10 +2,11 @@
 require('dotenv').config()
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs")
+const fs = require("fs");
+const { env } = require('process');
 
 async function main(imagefile) {
-  const ai = new genAi({ apiKey: "GOOGLE_API_KEY" });
+  const ai = new GoogleGenerativeAI({ apiKey: process.env.API_KEY });
 
   const base64ImageFile = fs.readFileSync(imagefile, {
     encoding: "base64",
@@ -14,7 +15,7 @@ async function main(imagefile) {
   const contents = [
     {
       inlineData: {
-        mimeType: "image/jpeg",
+        mimeType: "image/png",
         data: base64ImageFile,
       },
     },

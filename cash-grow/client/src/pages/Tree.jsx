@@ -78,12 +78,23 @@ function Tree() {
         console.log(newScore);
     },[userData]);
 
+    useEffect(() => {
+        const updateTree = async () => {
+            if (score !== undefined && score !== null) {
+                const img = await treeSelector(score, scheme);
+                setTree(img);
+            }
+        };
+    
+        updateTree();
+    }, [score]);
+
 
     return (
         <div className="treeContainer">
         <NavBar/>
         <img className="treePicture"
-        src={scheme[score] || scheme[5]} //Five is the standard
+        src={tree || scheme[5]} // fallback to default if tree is not ready, Might be better to change to a loading message.
         style={{ width: "auto", height: "auto" }}
         />
         <div>
@@ -118,16 +129,25 @@ function calculateBudgetingSuccess(userData, budget){
     return score;
 }
 
-function treeSelector(score, scheme){
-
-    if(score >= 0){
-        if(score(!(id in scheem))){
-            const treeBefore = closestTreeScore(score, scheme); //Need to figure out assigning of tree before 
-            setTree(handleGeneration(treeBefore)); //Want this bit to rreturn the closest smallest value to the one that I have
-        }
+async function treeSelector(score, scheme) {
+    if (score <= 0) {
+        return scheme[1];
     }
 
+    if (score in scheme) {
+        return scheme[score];
+    }
+
+    const closest = closestTreeScore(score, scheme);
+    try {
+        const generatedImage = await handleGeneration(scheme[closest]);
+        return generatedImage?.data?.imageUrl || scheme[closest]; // Fallback if API fails
+    } catch (err) {
+        console.error("Failed to generate image:", err);
+        return scheme[closest];
+    }
 }
+
 
 //Gets the tree with score just below the value the user score is, this can then be sent to the backend to generate a new tree.
 function closestTreeScore(score, scheme){
@@ -146,19 +166,21 @@ function closestTreeScore(score, scheme){
     }
 
 //might also be good to pass difference to the tree, this could be added to make understand the scale ?? Maybe to be added later
-async function handleGeneration(treeImgPath){
-
-    const data = new FormData;
+async function handleGeneration(treeImgPath) {
+    const data = new FormData();
     data.append("image", treeImgPath);
 
-    try{
-        const generatedTree = await axios.post("http://localhost:8080/imagecreation", data);
-        //Will have to deal with headers to make sure that the back end knows it is dealing with an image
-    }catch(err){
-        consnole.error("There was an error:", err);
+    try {
+        const res = await axios.post("http://localhost:8080/imagecreation", data, {
+            responseType:'arraybuffer' 
+        });
+        const blob = new Blob([res.data], {type: "image/png"});
+        imageUrl = URL.createObjectURL(blob);
+        return imageUrl;
+    } catch (err) {
+        console.error("There was an error:", err);
+        return null;
     }
-
-    return generatedTree;
 }
 
 export default Tree;

@@ -78,6 +78,8 @@ app.post("/csvupload", upload.single("csv"), (req, res) => {
           });     
   })
 
+  res.json({message: "CSV uploaded successfully"});
+
 })
 
 const tree = multer({dest: "Uploads/"});
@@ -85,7 +87,7 @@ app.post("/imagecreation", tree.single("image"), async (req, res) => {
     const filepath = req.file.path
     
     try{
-        const imageBuffer = await gemini(filepath);
+        const imageBuffer = await gemini.main(filepath);
 
         res.setHeader("Content-Type", "image/png");
         res.send(imageBuffer);
@@ -99,9 +101,9 @@ app.post("/imagecreation", tree.single("image"), async (req, res) => {
 })
 
 app.post("/transactionsubmit", (req, res) => {
-    const { recipient, inout, amount, location, account, date, category } = Object.values(req.body);
+    const { recipient, inout, amount, location, account, date, category } = Object.values(req.body); //This is missing the idUser, which is needed for it to really know what it is going to do. Sort it out tomorrow just try and do some css
     
-    const sql = `INSERT INTO Financials VALUES ( ? )`;
+    const sql = `INSERT INTO Financials VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     const values = [recipient, inout, amount, location, account, date, category]
 
@@ -118,7 +120,7 @@ app.post("/transactionsubmit", (req, res) => {
 app.post("/login", (req,res) => {
     console.log("received request:", req.body);
     const sql = "SELECT * FROM User WHERE Username = ?";
-    pwd = req.body.pwd;
+    const pwd = req.body.pwd;
     const values = [
         req.body.user
     ]
@@ -149,7 +151,7 @@ app.post("/login", (req,res) => {
 //Problem, cannot add the Budget into the table, need to get a return then add the id and the budget into the Budget table
 app.post('/signup', async (req, res) => {
     const usersql = "INSERT INTO User(Username, Password) VALUES (?, ?)";
-    const budgetsql = "INSERT INTO Budget(idUser, Budget) VALUES (?, ?)";
+    const budgetsql = "INSERT INTO Budgeting(idUser, Budget) VALUES (?, ?)";
     const { username, password, budget } = req.body;
 
     try {
