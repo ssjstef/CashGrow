@@ -10,6 +10,7 @@ import Tree9 from "../assets/Trees/Tree9.png";
 
 
 
+import styles from "./Tree.module.css";
 import { getWeeklySpendingData, getWeekStartDate } from "../graph/LineGraph";
 import AuthContext from "../context/AuthProvider";
 import { useContext, useState, useEffect } from "react";
@@ -91,16 +92,13 @@ function Tree() {
 
 
     return (
-        <div className="treeContainer">
-        <NavBar/>
-        <img className="treePicture"
-        src={tree || scheme[5]} // fallback to default if tree is not ready, Might be better to change to a loading message.
-        style={{ width: "auto", height: "auto" }}
-        />
-        <div>
-        <p>{auth?.user?.idUser}</p>
-        <p>{}</p>
-        </div>
+        <div className={styles.treeContainer}>
+            <div className={styles.mainContent}>
+                <NavBar className={styles.sidebar}/>
+                <img className={styles.treePicture}
+                    src={tree || scheme[5]} // fallback to default if tree is not ready, Might be better to change to a loading message.
+                />
+            </div>
         </div>
         );
 }

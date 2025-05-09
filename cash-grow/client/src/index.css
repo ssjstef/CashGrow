@@ -13,25 +13,7 @@ body{
   place-items: center;
 }
 
-.startPage{
-  display:flex;
-  padding-top: 2%;
-  flex-direction: column;
-  justify-content: center;
-}
 
-.treeContainer{
-  display:flex;
-  width: auto;
-  height: auto;
-  justify-content: center;
-}
-
-.treePicture{
-  border-radius: 15px;
-  opacity: 0.8;
-  object-fit: contain;
-}
 
 /* .logo-box{
   display:flex;
@@ -54,12 +36,6 @@ body{
 .logo{
   height: 8em;
   border-radius: 10px;    
-}
-
-.navbar{
-  background-color: hsl(0, 0%, 50%, 0.911);
-  color: black;
-  width: 20%;
 }
 
 /* Stuff for the other page */

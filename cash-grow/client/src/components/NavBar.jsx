@@ -1,9 +1,10 @@
 import React from 'react';
+import styles from "../pages/Tree.module.css";
 
 const NavBar = () => {
   return (
 
-<nav className="navbar">
+<nav className="navbar" className={styles.sidebar}>
   <div className="navbar-left">
     <image src="../assets/icons8-user-30.png" alt="Sign up"/>
   </div>
