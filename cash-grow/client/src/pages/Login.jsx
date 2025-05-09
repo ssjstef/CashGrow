@@ -4,6 +4,8 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import axios from "axios";
 import { timeout } from "d3-timer";
+import Header from "../components/Header.jsx";
+import styles from "./Login.module.css";
 
 function Login() {
 
@@ -71,10 +73,12 @@ function Login() {
             <h1>You Successfully logged in</h1>
             </div>
         ): (
-        <div>
+        <>
+        <div className={styles.contentBox}>
+        <div className={styles.formContainer}>
+            <div className={styles.loginBox}>
             <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
-            {/* Need to look into what this bad boy is actually doing over here to make sure that I understand where the error message is coming from*/ }
-            <h1>Sign in</h1>
+            <h1>Login</h1>
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="username">Username: </label>
@@ -98,6 +102,7 @@ function Login() {
 
                 <button>Sign in</button>
             </form>
+            </div>
             <p>
                 Need an Account? <br />
                 <span className="line">
@@ -105,6 +110,8 @@ function Login() {
                 </span>
             </p>
         </div>
+        </div>
+        </>
         )}
         </>
     )

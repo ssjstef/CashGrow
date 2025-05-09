@@ -5,8 +5,8 @@ import * as d3 from "d3";
 function BarChart({userData}){
 
   const svgRef = useRef();
-  const width = 700;
-  const height = 500;
+  const width = 600;
+  const height = 400;
 
   //Only shows the last 10 weeks (in the future should be able to choose which ten weeks)
   const data = getWeeklySpendingDataPerCategory(userData).slice(0,10);
@@ -74,7 +74,7 @@ function BarChart({userData}){
     g.append("g").call(d3.axisLeft(y));
 
     // Legend
-    const legend = svg.append("g").attr("transform", `translate(${width - 150}, 20)`);
+    const legend = svg.append("g").attr("transform", `translate(${width - 500}, 20)`);
 
     keys.forEach((key, i) => {
       const row = legend.append("g").attr("transform", `translate(0, ${i * 20})`);

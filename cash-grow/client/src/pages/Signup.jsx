@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import styles from "./Signup.module.css";
+import Header from "../components/Header.jsx";
 
 function Signup() {
 
@@ -27,6 +29,7 @@ function Signup() {
         try{
             const res = await axios.post("http://localhost:8080/signup", {username, password, budget});
             console.log(res.data)
+            setSuccess(true);
         }catch(err) {
             console.error("There was a problem:", err);
         }
@@ -40,8 +43,11 @@ function Signup() {
             <h1>Successfully Signed Up</h1>
         </div>
     ): (
-    <div>
+        <>
+<div className={styles.contentBox}>
+    <div className={styles.formContainer}>
         <h1>Sign Up</h1>
+        <div className={styles.signUpBox}>
         <form onSubmit={handleSubmit}>
             <label htmlFor="username">Username:</label>
             <input
@@ -73,14 +79,19 @@ function Signup() {
 
             <button>Sign up</button>
         </form>
-
-        <p>
+        </div>
+        <div>
+            <p>
             Already have an account? <br />
             <span className='line'>
                 <Link to="/login">Login</Link>
             </span>
             </p>
+        </div>
     </div>
+
+</div>
+</>
     )}
     </>
     )

@@ -1,5 +1,9 @@
+  .header{
+   display: flex;
+   justify-content: center;
+  }
 .treeContainer {
-    background-color: #d3e9b9; /* soft green */
+    background-color: hsl(85, 67%, 78%); /* soft green */
     min-height: 100vh;
     /*padding-top: 60px;*/
     font-family: 'Verdana', sans-serif;
@@ -8,36 +12,65 @@
     align-items:  center;
   }
   
+  .logo{
+    height: 80px;
+    width: 80px;
+    border-radius: 20px;
+  }
+  
   .treePicture {
-    max-width: 95%;
-    max-height: 70%;
+    height: 100vh;
+    width: 100%;
     border-radius: 20px;
     box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   
   .mainContent {
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 95%;
     margin-top: 20px;
     position: absolute;
   }
   
   .sidebar {
     position: absolute;
-    max-height:max-content;
     width: 180px;
+    height: 98vh;
     margin-left: 10px;
-    background-color: #7c7c7c;
-    color: white;
+    background-color: #E6F0DC;
+    color: black;
     padding: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    font-size: 14px;
+    align-items: center;         
+    justify-content: center;
+    font-size: 16px;
+    gap: 20px;                  
   }
   
+  .navItem {
+    background-color: white;
+    padding: 20px;
+    margin: 10px 0;
+    width: 100%;
+    display:block;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  }
+  
+  .navItem:hover {
+    background-color: #d8e8c8;
+    transform: translateY(-2px);
+  }
   .notificationBox {
     position: absolute;
     right: 0;
@@ -69,4 +102,26 @@
     padding: 10px 20px;
     border-radius: 12px;
     font-family: 'Georgia', serif;
+  }
+
+  .logoutContainer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .logoutContainer button {
+    background-color: #e6f0dc;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .logoutContainer button:hover {
+    background-color: #cfe4c8;
   }

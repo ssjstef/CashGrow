@@ -5,8 +5,8 @@ function LineGraph({ userData, userBudget }) {
   const svgRef = useRef();
 
   const weeklyData = getWeeklySpendingData(userData);
-  const width = 700;
-  const height = 500;
+  const width = 600;
+  const height = 400;
   const margin = { top: 20, right: 30, bottom: 40, left: 50 };
 
   // Parse data

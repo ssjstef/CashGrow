@@ -1,4 +1,5 @@
 import styles from "./Graph.module.css";
+import { useNavigate } from "react-router-dom";
 import {useState, useContext, useEffect} from "react";
 import  AuthContext  from "../context/AuthProvider";
 import axios from "axios";
@@ -6,10 +7,12 @@ import BarChart from "../graph/BarChart";
 import PieChart from "../graph/PieChart";
 import LineGraph from "../graph/LineGraph";
 import BubbleGraph from "../graph/BubbleGraph"
+import Header from "../components/Header"
+import NavBar from "../components/NavBar"
 
-//This adds another graph to the side for the comparison, this should change to what has been decided instead with Jing
-//Might need a prop to determine what should be loaded in (which graph?) or selected from the dropdown (all one element?)
 function Graph(){
+
+    const navigate = useNavigate();
 
     const { auth, setAuth } = useContext(AuthContext);
 
@@ -54,20 +57,20 @@ function Graph(){
         }
 
     }, [auth]);
-    
-    // useEffect(() => {
-    //     if (budget !== undefined) {
-    //         const userBudget = budget[0].Budget;
-    //         console.log(userBudget);
-    //     }
-    // }, [budget]);//This proccess occurs every time that auth value changes (every time a user is chaged)
 
     return(
 
         <div className={styles.graphPage}>
+        <button
+        className={styles.backButton}
+        onClick={() => navigate("/tree")}
+        >
+            Back to Tree
+        </button>
+        <Header/>
 
 
-            <h1 className={styles.heading}> Graph</h1>
+            <h1 className={styles.heading}>Graph</h1>
 
             <div className={styles.graphBox}>
 
@@ -82,7 +85,7 @@ function Graph(){
                         <option value="bubbleGraph">Bubble Graph</option>
                     </select>
 
-                    <div className="graph">
+                    <div className={styles.graph}>
                         {budget !== undefined && (
                             renderGraph(graphChoice, userData, budget)
                         )}
@@ -90,7 +93,7 @@ function Graph(){
 
                 </div> {/* End of GraphAreaOne */}
             </div> {/* Graph Box  end */}
-            <div className="transaction-table">
+            <div className={styles.transactionTable}>
                 <table>
                 <thead>
                 <tr>

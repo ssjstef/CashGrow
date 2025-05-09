@@ -4,8 +4,8 @@ import { createBubbles } from "./Data";
 
 function BubbleGraph({ userData }) {
   const svgRef = useRef();
-  const width = 500;
-  const height = 500;
+  const width = 400;
+  const height = 400;
 
   const color = d3.scaleLinear()
     .domain([0, 5])

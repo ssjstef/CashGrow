@@ -7,7 +7,7 @@ import Tree6 from "../assets/Trees/Tree6.png";
 import Tree7 from "../assets/Trees/Tree7.png";
 import Tree8 from "../assets/Trees/Tree8.png";
 import Tree9 from "../assets/Trees/Tree9.png";
-
+import Logo from "../assets/CashGrowLogo.png";
 
 
 import styles from "./Tree.module.css";
@@ -16,6 +16,8 @@ import AuthContext from "../context/AuthProvider";
 import { useContext, useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import axios from "axios";
+
+import Header from "../components/Header.jsx";
 
 function Tree() {
 
@@ -92,14 +94,21 @@ function Tree() {
 
 
     return (
+        <>
+        <Header/>
         <div className={styles.treeContainer}>
             <div className={styles.mainContent}>
                 <NavBar className={styles.sidebar}/>
-                <img className={styles.treePicture}
+                <div
+                    className={styles.treePicture}
+                    style={{ backgroundImage: `url(${tree || scheme[5]})` }}
+                ></div>                
+                {/* <img className={styles.treePicture}
                     src={tree || scheme[5]} // fallback to default if tree is not ready, Might be better to change to a loading message.
-                />
+                /> */}
             </div>
         </div>
+        </>
         );
 }
 

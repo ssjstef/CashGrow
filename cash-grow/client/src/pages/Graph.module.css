@@ -5,23 +5,81 @@
 .graphBox {
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    background-color: #d8d1cf56;
+    margin:20px;
+    padding: 20px;
+    border-radius: 15px;
 }
 
 .graphAreaOne{
     display: flex;
-    background-color: #d8d1cf1f;
-}
-
-.verticalRule{
-    border-left: 3px solid black;
-    height: 50em;
 }
 
 .heading{
-    border: solid black;
+    align-self: center;
 }
 
 .graph{
-    background-color: #cfc7c586;
-
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 1px solid #fff;
+    padding: 10px;
+    margin-top: 10px;
 }
+
+.backButton{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #E6F0DC;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.transactionTable {
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1000px;
+    overflow-x: auto;
+    border-radius: 10px;
+    background-color: #ffffffb0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transactionTable table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .transactionTable th,
+  .transactionTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .transactionTable th {
+    background-color: #E6F0DC;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .transactionTable tr:nth-child(even) {
+    background-color: #f7fdf3;
+  }
+  
+  .transactionTable tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .transactionTable tr:hover {
+    background-color: #e0f2d9;
+    transition: background-color 0.3s;
+  }

@@ -12,8 +12,8 @@ function PieChart({ userData, userBudget }) {
             return;
         }
 
-        const width = 500;
-        const height = 500;
+        const width = 400;
+        const height = 400;
         const outerRadius = Math.min(width, height) / 2;
         const innerRadius = outerRadius * 0.6;
         const color = d3.scaleOrdinal(d3.schemeCategory10);
