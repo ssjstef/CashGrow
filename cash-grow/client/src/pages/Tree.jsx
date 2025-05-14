@@ -103,9 +103,6 @@ function Tree() {
                     className={styles.treePicture}
                     style={{ backgroundImage: `url(${tree || scheme[5]})` }}
                 ></div>                
-                {/* <img className={styles.treePicture}
-                    src={tree || scheme[5]} // fallback to default if tree is not ready, Might be better to change to a loading message.
-                /> */}
             </div>
         </div>
         </>
@@ -114,15 +111,8 @@ function Tree() {
 
 function calculateBudgetingSuccess(userData, budget){
 
-    //Get Weekly spending, gets all of the weeks and their starting date, which could then be ordered?
-        //Then you can go through array of sorted dates and see how far you can go before a fail is found, that
-            //is the success rate
-
-        //I do not have user data here at the moment need to get it. (not sure if it worth another API call) - made it, might be better to add it to auth
-
     const weeklySpending = getWeeklySpendingData(userData, budget);
 
-    //This is all of the data, need to figure out if this is ordered or not
     let score = 0;
 
     for (let i = 0; i < weeklySpending.length; i++) {
@@ -156,7 +146,7 @@ async function treeSelector(score, scheme) {
 }
 
 
-//Gets the tree with score just below the value the user score is, this can then be sent to the backend to generate a new tree.
+//Gets the tree with score just below the value the user's score is, this can then be sent to the backend to generate a new tree.
 function closestTreeScore(score, scheme){
     const keys = Object.keys(scheme).map(Number).sort((a, b) => a - b);
     let closest = keys[0];

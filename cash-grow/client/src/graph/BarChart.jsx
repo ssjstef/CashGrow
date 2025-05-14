@@ -1,24 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-// 🎯 Main Chart Component
+// Renders the barchart graph
+// Data is passed through by the Graph component, removes the need for another fetch request
 function BarChart({userData}){
 
-  const svgRef = useRef();
+  const svgRef = useRef(); //Creates state where the graph is saved
   const width = 600;
   const height = 400;
 
   //Only shows the last 10 weeks (in the future should be able to choose which ten weeks)
   const data = getWeeklySpendingDataPerCategory(userData).slice(0,10);
 
-  // Dynamically extract all category keys
+  // Extracts all category keys
   const keys = Array.from(
     new Set(
-      data.flatMap(d => Object.keys(d).filter(k => k !== "weekStart"))
+      data.flatMap(d => Object.keys(d).filter(k => k !== "weekStart")) 
     )
   );
 
-  useEffect(() => {
+  //Renders only when the component is mounted
+  useEffect(() => { 
+    //Dimensions of graph
     const margin = { top: 30, right: 30, bottom: 50, left: 60 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;

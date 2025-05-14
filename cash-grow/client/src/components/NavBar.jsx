@@ -4,7 +4,7 @@ import styles from "../pages/Tree.module.css";
 const NavBar = () => {
   return (
 
-<nav className="navbar" className={styles.sidebar}>
+<nav className={styles.sidebar}>
   <div>
       <a href="/graph" className={styles.navItem}>Graphs</a>
       <a href="/upload" className={styles.navItem}>Input Data</a>
