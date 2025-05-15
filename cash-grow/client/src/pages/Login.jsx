@@ -11,7 +11,7 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext); // Allows the auth for the whole application to be updated
     const userRef = useRef();
     const errRef = useRef();
 
@@ -19,7 +19,7 @@ function Login() {
     const [pwd, setPwd] = useState("");
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
-    //Should get rid of this when using react router to re-route to the desired page after a successful login in. 
+   
 
     useEffect(() => {
         userRef.current.focus();
@@ -29,6 +29,7 @@ function Login() {
         setErrMsg('');
     }, [user, pwd])
 
+    //When the user successfully logged in they are redirected to the tree page
     useEffect(() => {
          if(success){
              const timer = setTimeout(() =>{
@@ -38,22 +39,22 @@ function Login() {
          }
     }, [success, navigate])
 
+    //Makes login request to the API
     const handleSubmit = async (e) => {
         e.preventDefault();
 
 
         try{
             const res = await axios.post("http://localhost:8080/login", {user, pwd});
-            //This should now be setting the token (this needs to be handled in a different way)
-            console.log(res.data);
-            const { accessToken, user: userData } = res.data;
+
+            const { accessToken, user: userData } = res.data; 
+
+            //If the user successfully logs the context is updated for the whole application through AuthProvider
             setAuth({accessToken, user: userData})
             setSuccess(true);
-            setUser("");
+            setUser(""); // clears the user's entries 
             setPwd("");
-            console.log(accessToken, userData.idUser);
-            //should really be getting all of the user data now, there is no real point getting it multiple times.
-            //Should be when the user has just logged in. 
+ 
 
         }catch (err) {
             if(err.response?.status == 401) {
@@ -70,7 +71,8 @@ function Login() {
         <>
         {success ? (
             <div>
-            <h1>You Successfully logged in</h1>
+                {/* Message to show briefly when a successful sign in is made */}
+            <h1>You Successfully logged in</h1> 
             </div>
         ): (
         <>
@@ -78,7 +80,8 @@ function Login() {
         <div className={styles.formContainer}>
             <div className={styles.loginBox}>
             <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Login</h1>
+            <h1>Login</h1> 
+            {/* Login form */}
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="username">Username: </label>
@@ -106,6 +109,7 @@ function Login() {
             <p>
                 Need an Account? <br />
                 <span className="line">
+                    {/* Link navigates to the singup page in case the user does not have an account */}
                     <Link to="/signup">Sign Up</Link>
                 </span>
             </p>

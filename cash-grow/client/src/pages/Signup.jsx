@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./Signup.module.css";
 import Header from "../components/Header.jsx";
 
+//Comopnent that allows user to create a new account
 function Signup() {
 
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Signup() {
     const [success, setSuccess] = useState("");
     const [budget, setBudget] = useState("");
 
+    // If the account is successfully created the user is redirected to the Tree page
     useEffect(() => {
         if(success){
             const timer = setTimeout(() => {
@@ -22,14 +24,16 @@ function Signup() {
         }
     }, [success])
 
+    //When the form is submitted it sends the information to the API
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
         try{
             const res = await axios.post("http://localhost:8080/signup", {username, password, budget});
-            console.log(res.data)
+            //User must also input their budget
             setSuccess(true);
+
         }catch(err) {
             console.error("There was a problem:", err);
         }

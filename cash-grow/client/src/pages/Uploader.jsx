@@ -20,22 +20,21 @@ function Uploader(){
     const [category, setCategory] = useState("");
 
 
-    //e is the event that happens inside of the input field
     const fileChange = (e) =>{
-        setFile(e.target.files[0]);
+        setFile(e.target.files[0]); //Changes the file to the one the user entered
     };
 
-    //makes sure that it gets the file
+    //Handles the upload of the csv file
     const handleUpload = async () => {
         
-        const formdata = new FormData;
+        const formdata = new FormData; //Allows data to be sent to the API
         formdata.append("csv", file);
 
         try{
             //make post request with axios 
             const response = await axios.post("http://localhost:8080/csvupload", formdata);
-            //axios should detect the data type and set it itslef to the right stuff (because we are using FormData)
-            console.log("success", response.data);
+            //axios detects the data type and takes any steps necessary due to the fact we are using FormData
+
             setSuccess(true);
 
         }
@@ -45,8 +44,9 @@ function Uploader(){
     }
     //Now we have the csv ready to be sent to the backend
 
+    //handles user's manual input of a transaction
     const handleSubmit = async(e) => {
-        e.preventDefault();
+        e.preventDefault(); //Allows the rest of the code to be executed
 
         const transaction = {
             recipient,
@@ -58,7 +58,6 @@ function Uploader(){
             category
         }
 
-        console.log(transaction);
         
         try{
             const response = await axios.post("http://localhost:8080/transactionsubmit", transaction);
@@ -88,7 +87,8 @@ function Uploader(){
         {/* CSV Upload Section */}
         <div className={styles.csvArea}>
           <h2>Upload Your CSV</h2>
-          <input type="file" accept=".csv" onChange={fileChange} />
+          {/* The input field will only accept csv files  */}
+          <input type="file" accept=".csv" onChange={fileChange} /> 
           <button onClick={handleUpload}>Upload CSV</button>
         </div>
 
@@ -179,38 +179,3 @@ function Uploader(){
 }
 
 export default Uploader;
-
-//Correct order
-//Recipient
-//InOutGoing
-//Amount
-//Location
-//Account
-//Date
-//Category
-
-{/* <div>
-<input type="text" placeholder="Recipient" required="true"/>
-<select name="Category" id="Category" placeholder="Category" required="true">
-    <option value="Food">Fast Food</option>
-    <option value="Groceries">Groceries</option>
-    <option value="Drink">Drink</option>
-    <option value="Clothing">Clothing</option>
-    <option value="Sportswear">Sportswear</option>
-    <option value="Books">Books</option>
-    <option value="Retail">Retail</option>
-    <option value="Pharmacy">Pharmacy</option>
-    <option value="Online Shopping">Online Shopping</option>
-    <option value="Stationary">Stationary</option>
-    <option value="Bakery">Bakery</option>
-    <option value="Furniture">Furniture</option>
-</select>
-<input type="" placeholder="In/Out" required="true"/>
-<input type="text" placeholder="Location" required="true"/>
-<input type="number" placeholder="Amount" required="true"/>
-<input type="date" placeholder="Date" required="true"/>
-<input type="text" placeholder="Category" required="true"/>
-<button onClick={handleSubmit}>Submit</button> */}
-
-
-//Completley the wrong order, need to switch everything up to keep consistency. 

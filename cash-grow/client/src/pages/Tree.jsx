@@ -11,7 +11,7 @@ import Logo from "../assets/CashGrowLogo.png";
 
 
 import styles from "./Tree.module.css";
-import { getWeeklySpendingData, getWeekStartDate } from "../graph/LineGraph";
+import { getWeeklySpendingData } from "../graph/Data";
 import AuthContext from "../context/AuthProvider";
 import { useContext, useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
@@ -70,7 +70,7 @@ function Tree() {
         if(auth?.accessToken) {
         fetchUserData();
         }else{
-            console.log("no game boss")
+            console.log("uncessful authentication")
         }
 
     }, [auth]);
@@ -78,7 +78,6 @@ function Tree() {
     useEffect(() => {
         const newScore = calculateBudgetingSuccess(userData, budget);
         setScore(newScore);
-        console.log(newScore);
     },[userData]);
 
     useEffect(() => {

@@ -14,17 +14,6 @@ body{
 }
 
 
-
-/* .logo-box{
-  display:flex;
-  background-color: hsl(100, 74%, 27%);
-  border-radius: 15px;
-  justify-content: center;
-  color: white;
-  padding-left: 1%;
-  padding-right: 1%;
-} */
-
 .logoContainer{
   display: flex;
   flex-direction:  row;

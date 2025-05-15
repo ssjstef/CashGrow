@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import React, { useRef, useEffect } from "react";
+import { getWeeklySpendingData } from "./Data";
 
 //Function that creates the Line Graph, data is provided by the Graph component
 function LineGraph({ userData, userBudget }) {
@@ -119,33 +120,6 @@ function LineGraph({ userData, userBudget }) {
 
 // =============================================== These need to be moved into data.js, do this in a bit and be careful 
 
-// Group transactions by week
-export function getWeeklySpendingData(transactions) {
-  const weekMap = new Map();
 
-  transactions.forEach(tx => {
-    console.log(tx)
-    const txDate = new Date(tx.Date);
-    const monday = getWeekStartDate(txDate);
-    const key = monday.toISOString().split("T")[0];
-    const amount = parseFloat(tx.Amount) || 0;
-
-    weekMap.set(key, (weekMap.get(key) || 0) + amount);
-  });
-
-  return Array.from(weekMap.entries())
-    .sort((a, b) => new Date(a[0]) - new Date(b[0]))
-    .map(([weekStart, spent]) => ({ weekStart, spent }));
-}
-
-// Get Monday of the week
-export function getWeekStartDate(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diffToMonday = (day === 0 ? -6 : 1) - day;
-  d.setDate(d.getDate() + diffToMonday);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
 
 export default LineGraph; 

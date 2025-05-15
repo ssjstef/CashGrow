@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from "../pages/Tree.module.css";
 
+//Navbar to be added to the side of some pages
 const NavBar = () => {
   return (
 
