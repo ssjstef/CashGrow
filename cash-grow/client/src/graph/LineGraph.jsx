@@ -118,8 +118,6 @@ function LineGraph({ userData, userBudget }) {
   );
 }
 
-// =============================================== These need to be moved into data.js, do this in a bit and be careful 
-
 
 
 export default LineGraph; 

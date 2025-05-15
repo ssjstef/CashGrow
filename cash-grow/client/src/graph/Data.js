@@ -49,7 +49,6 @@ import { useContext } from 'react';
     const weekMap = new Map();
   
     transactions.forEach(tx => {
-      console.log(transactions);
       const txDate = new Date(tx.Date);
       const monday = getWeekStartDate(txDate);
       const weekKey = monday.toISOString().split("T")[0];
