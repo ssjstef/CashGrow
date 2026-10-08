@@ -1,12 +1,16 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import styles from "./Uploader.module.css";
+import  AuthContext  from "../context/AuthProvider";
+
 
 function Uploader(){
 
     const navigate = useNavigate();
+
+    const {auth, setAuth} = useContext(AuthContext);
 
     const [file, setFile] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -24,16 +28,19 @@ function Uploader(){
         setFile(e.target.files[0]); //Changes the file to the one the user entered
     };
 
-    //Handles the upload of the csv file
     const handleUpload = async () => {
         
-        const formdata = new FormData; //Allows data to be sent to the API
+        const formdata = new FormData;
         formdata.append("csv", file);
 
         try{
-            //make post request with axios 
-            const response = await axios.post("http://localhost:8080/csvupload", formdata);
-            //axios detects the data type and takes any steps necessary due to the fact we are using FormData
+            const response = await axios.post("http://localhost:8080/csvupload", formdata ,{
+              headers: {
+                Authorization: `Bearer ${auth.accessToken}`,
+                "Content-Type": "multipart/form-data"
+              }
+            });
+
 
             setSuccess(true);
 
@@ -42,11 +49,10 @@ function Uploader(){
             console.error("error in sending data: ", error);
         }
     }
-    //Now we have the csv ready to be sent to the backend
 
     //handles user's manual input of a transaction
     const handleSubmit = async(e) => {
-        e.preventDefault(); //Allows the rest of the code to be executed
+        e.preventDefault();
 
         const transaction = {
             recipient,
@@ -58,9 +64,14 @@ function Uploader(){
             category
         }
 
+
         
         try{
-            const response = await axios.post("http://localhost:8080/transactionsubmit", transaction);
+            const response = await axios.post("http://localhost:8080/transactionsubmit", transaction, {
+              headers: {
+                Authorization: `Bearer ${auth.accessToken}`
+              }
+        });
             setSuccess(true);
         }catch(err){
             console.error("There was an error with API:", err);

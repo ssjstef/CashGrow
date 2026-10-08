@@ -1,19 +1,22 @@
-import { useState, useContext, useEffect } from "react";
+import {useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import  AuthContext  from "../context/AuthProvider";
 
-
-//Button to be added to the header to allow the user to log out
 function LogOut(){
+
+    const navigate = useNavigate();
+
+
     const {auth, setAuth} = useContext(AuthContext);
 
     const handleClick = () => {
-        setAuth(null); // When pressed it removes user values from context
+        setAuth(null); // Context value reset
     }
 
     useEffect(() => {
     if(!auth){
         const timer = setTimeout(() =>{
-            navigate("/login"); //Once the data is removed, after 1 second it navigates the user to the login page
+            navigate("/login"); 
         }, 1000)
         return () => clearTimeout(timer);
     }

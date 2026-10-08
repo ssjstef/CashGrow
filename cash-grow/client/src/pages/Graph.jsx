@@ -22,7 +22,6 @@ function Graph(){
 
     const [graphChoice, setGraphChoice] = useState("lineGraph"); //Used to select the component to actually render
     
-    //When a different graph is selected it updated the state of graph to the selected one
     const changeGraph = (event) => {
         setGraphChoice(event.target.value);
     }

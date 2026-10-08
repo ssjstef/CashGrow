@@ -11,7 +11,7 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const { setAuth } = useContext(AuthContext); // Allows the auth for the whole application to be updated
+    const { setAuth } = useContext(AuthContext); 
     const userRef = useRef();
     const errRef = useRef();
 
@@ -29,7 +29,6 @@ function Login() {
         setErrMsg('');
     }, [user, pwd])
 
-    //When the user successfully logged in they are redirected to the tree page
     useEffect(() => {
          if(success){
              const timer = setTimeout(() =>{
@@ -39,7 +38,6 @@ function Login() {
          }
     }, [success, navigate])
 
-    //Makes login request to the API
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -49,10 +47,9 @@ function Login() {
 
             const { accessToken, user: userData } = res.data; 
 
-            //If the user successfully logs the context is updated for the whole application through AuthProvider
             setAuth({accessToken, user: userData})
             setSuccess(true);
-            setUser(""); // clears the user's entries 
+            setUser("");
             setPwd("");
  
 
@@ -71,7 +68,6 @@ function Login() {
         <>
         {success ? (
             <div>
-                {/* Message to show briefly when a successful sign in is made */}
             <h1>You Successfully logged in</h1> 
             </div>
         ): (
@@ -81,7 +77,6 @@ function Login() {
             <div className={styles.loginBox}>
             <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h1>Login</h1> 
-            {/* Login form */}
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="username">Username: </label>
@@ -109,7 +104,6 @@ function Login() {
             <p>
                 Need an Account? <br />
                 <span className="line">
-                    {/* Link navigates to the singup page in case the user does not have an account */}
                     <Link to="/signup">Sign Up</Link>
                 </span>
             </p>

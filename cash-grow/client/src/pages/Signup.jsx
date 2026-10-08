@@ -14,24 +14,21 @@ function Signup() {
     const [success, setSuccess] = useState("");
     const [budget, setBudget] = useState("");
 
-    // If the account is successfully created the user is redirected to the Tree page
     useEffect(() => {
         if(success){
             const timer = setTimeout(() => {
-                navigate("/tree");
+                navigate("/login"); // Through the login process users are given an access token
             }, 1000)
             return () => clearTimeout(timer);
         }
     }, [success])
 
-    //When the form is submitted it sends the information to the API
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
         try{
             const res = await axios.post("http://localhost:8080/signup", {username, password, budget});
-            //User must also input their budget
             setSuccess(true);
 
         }catch(err) {
