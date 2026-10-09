@@ -2,34 +2,28 @@ import { useRef, useEffect } from 'react';
 import * as d3 from "d3"; 
 import { getWeeklySpending } from "./Data";
 
-// Returns a pie chart, data is provided by the Graph component
 function PieChart({ userData, userBudget }) {
-    const svgRef = useRef(); // This is used as a reference to the svg DOM element
+    const svgRef = useRef();
 
     useEffect(() => {
-        // Ensures the data is valid
         if (!Array.isArray(userData) || typeof userBudget !== "number") {
             console.warn("Invalid data for PieChart");
             return;
         }
 
-        //dimentions of chart
         const width = 550;
         const height = 400;
         const outerRadius = Math.min(width, height) / 2;
         const innerRadius = outerRadius * 0.6;
-        const color = d3.scaleOrdinal(d3.schemeCategory10); // Colour scale provided by d3
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
         const keys = ["Amount spent", "Amount remaining"];
 
-        // Formats data into the amount spent this week
         const weeklySpending = getWeeklySpending(userData);
         
         const spendingData = [
-            { label: "Spent", value: weeklySpending }, // Amount the user has spent
-            { label: "Remaining", value: Math.max(userBudget - weeklySpending, 0) } // Remaining amount taken away from budget
-        ];
+            { label: "Spent", value: weeklySpending },
+            { label: "Remaining", value: Math.max(userBudget - weeklySpending, 0) } 
 
-        // Construction of the segments
         const arc = d3.arc()
             .innerRadius(innerRadius)
             .outerRadius(outerRadius);
@@ -44,14 +38,13 @@ function PieChart({ userData, userBudget }) {
             .attr("width", width)
             .attr("height", height);
 
-        svg.selectAll("*").remove(); // clears the svg to add fresh drawing
+        svg.selectAll("*").remove();
 
         const g = svg.append("g")
             .attr("transform", "translate(60, 0)");
 
         const arcs = pie(spendingData);
 
-        // Draws the slices
         g.selectAll("path")
             .data(arcs)
             .enter()
@@ -61,7 +54,6 @@ function PieChart({ userData, userBudget }) {
             .append("title")
             .text(d => `${d.data.label}: ${d.data.value.toFixed(2)}`);
 
-        // Adds the legend
         const legend = svg.selectAll(".legend")
             .data(spendingData)
             .enter()

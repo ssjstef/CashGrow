@@ -4,7 +4,6 @@ import axios from "axios";
 import styles from "./Signup.module.css";
 import Header from "../components/Header.jsx";
 
-//Comopnent that allows user to create a new account
 function Signup() {
 
     const navigate = useNavigate();

@@ -161,7 +161,7 @@ function closestTreeScore(score, scheme){
     return closest;
     }
 
-//might also be good to pass difference to the tree, this could be added to make understand the scale ?? Maybe to be added later
+//might also be good to pass difference to the tree, this could be added to give more context to AI
 async function handleGeneration(treeImgPath) {
     const data = new FormData();
     data.append("image", treeImgPath);

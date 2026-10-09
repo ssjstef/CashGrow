@@ -13,7 +13,12 @@ const gemini = require('./gemini');
 const bcrypt = require("bcrypt");
 
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
+const HOST = process.env.DB_HOST;
+const USER = process.env.DB_USER;
+const DB = process.env.DB_NAME;
+const PASS = process.env.DB_PASSWORD;
+
 
 const app = express();
 app.use(express.json());
@@ -22,10 +27,10 @@ app.use(cors());
 
 const pool = mysql.createPool({
 
-    host: 'localhost',
-    user: 'root',  
-    database: 'CashGrow',
-    password: 'mysqlpass123',
+    host: HOST,
+    user: USER,  
+    database: DB,
+    password: PASS,
     waitForConnections: true,
     connectTimeout: 10000
     
@@ -104,7 +109,7 @@ app.post("/transactionsubmit", authenticateToken, (req, res) => {
 
     const userId = req.user.idUser;
     
-    const { recipient, inout, amount, location, account, date, category } = Object.values(req.body); //each variable represents a value the user inputs
+    const { recipient, inout, amount, location, account, date, category } = Object.values(req.body);
     
     const sql = `INSERT INTO Financials (idUser, recipient, inout, amount, location, account, date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 

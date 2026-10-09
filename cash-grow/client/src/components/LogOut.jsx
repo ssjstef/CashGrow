@@ -10,7 +10,7 @@ function LogOut(){
     const {auth, setAuth} = useContext(AuthContext);
 
     const handleClick = () => {
-        setAuth(null); // Context value reset
+        setAuth(null);
     }
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function LogOut(){
    }, [auth])
 
     return(
-        <button onClick={handleClick}>Log out</button> //Button element
+        <button onClick={handleClick}>Log out</button> 
     )
 }
 

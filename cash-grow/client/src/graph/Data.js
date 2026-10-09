@@ -22,7 +22,7 @@ import { useContext } from 'react';
     const recipientMap = {};
   
     userData.forEach(entry => {
-      const recipient = entry.Recipient?.trim();  // sanitize string
+      const recipient = entry.Recipient?.trim();  
       const amount = parseFloat(entry.Amount);
   
       if (!recipient || isNaN(amount)) return;
@@ -36,7 +36,7 @@ import { useContext } from 'react';
   
     const children = Object.entries(recipientMap).map(([name, value]) => ({
       name,
-      value: +value.toFixed(2), // round to 2 decimal places
+      value: +value.toFixed(2),
     }));
   
     return {
@@ -72,7 +72,6 @@ import { useContext } from 'react';
       }));
   }
 
-    // Get start of week (Monday)
   export function getWeekStartDate(date) {
     const d = new Date(date);
     const day = d.getDay();
@@ -99,7 +98,7 @@ import { useContext } from 'react';
         if (
             transactionDate >= monday &&
             transactionDate <= today
-            //transaction.InOut?.toLowerCase() === "out" // optional chaining now safe
+            //transaction.InOut?.toLowerCase() === "out" 
         ) {
             totalSpent += parseFloat(transaction.Amount) || 0;
         }

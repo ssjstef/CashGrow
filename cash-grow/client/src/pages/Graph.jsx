@@ -14,20 +14,18 @@ function Graph(){
 
     const navigate = useNavigate();
 
-    const { auth, setAuth } = useContext(AuthContext); //Gives component access to all user context
+    const { auth, setAuth } = useContext(AuthContext); 
 
-    const [ userData, setUserData ] = useState([]); //Used to store all of the transaction
+    const [ userData, setUserData ] = useState([]); 
 
-    const [ budget, setBudget] = useState(); //Stores user's budgeting goal
+    const [ budget, setBudget] = useState(); 
 
-    const [graphChoice, setGraphChoice] = useState("lineGraph"); //Used to select the component to actually render
-    
+    const [graphChoice, setGraphChoice] = useState("lineGraph"); 
     const changeGraph = (event) => {
         setGraphChoice(event.target.value);
     }
 
-    //Makes a fetch request to the API for the user data
-    //useEffect is run everytime the value stored in auth (the context) changes ensuring the data updates
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -61,7 +59,7 @@ function Graph(){
         <div className={styles.graphPage}>
         <button
         className={styles.backButton}
-        onClick={() => navigate("/tree")} //Button for navigation back to the tree
+        onClick={() => navigate("/tree")} 
         >
             Back to Tree
         </button>
@@ -75,7 +73,7 @@ function Graph(){
                 <div>
                 
 
-                    <select name="graphs" id="graphs" onChange={changeGraph}> {/* User input to be used for graph slection */}
+                    <select name="graphs" id="graphs" onChange={changeGraph}> 
                         <option value="lineGraph">Line Graph</option>
                         <option value="barChart">Bar Chart</option>
                         <option value="pieChart">Pie Chart</option>
@@ -84,7 +82,7 @@ function Graph(){
 
                     <div className={styles.graph}>
                         {budget !== undefined && (
-                            renderGraph(graphChoice, userData, budget) //Uses the renderGraph function to dusplay the slected graph
+                            renderGraph(graphChoice, userData, budget) 
                         )}
                     </div>
 
@@ -105,7 +103,6 @@ function Graph(){
                 </thead>
                 <tbody>
                 {userData.map((val, key) => { 
-                    {/* Automatically matched the all of the user transactions to the table columns */}
 
                     return(
                         <tr key={key}>
@@ -127,8 +124,7 @@ function Graph(){
     )
 }
 
-// Provides a way to swtch the graph to be rendered depending on the user's requests
-// Uses the graphs created by the imported React Components to actaully render them
+
 function renderGraph(graphChoice, userData, budget){
 
     switch(graphChoice){

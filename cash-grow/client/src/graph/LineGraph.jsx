@@ -2,62 +2,49 @@ import * as d3 from "d3";
 import React, { useRef, useEffect } from "react";
 import { getWeeklySpendingData } from "./Data";
 
-//Function that creates the Line Graph, data is provided by the Graph component
 function LineGraph({ userData, userBudget }) {
 
-  const svgRef = useRef(); // This is used as a reference to the svg DOM element
+  const svgRef = useRef(); 
 
-  // Group data by the week start date and the amount spent in that week
   const weeklyData = getWeeklySpendingData(userData);
 
-  //svg dimentions
   const width = 600;
   const height = 400;
   const margin = { top: 20, right: 30, bottom: 40, left: 50 };
 
-  // Parse data into arrays to be used to built graph
 
-  const weekLabels = weeklyData.map(d => new Date(d.weekStart)); //x axis labels (week starting on)
-  const amountSpentWeekly = weeklyData.map(d => parseFloat(d.spent)); //amount spent each week
+  const weekLabels = weeklyData.map(d => new Date(d.weekStart)); 
+  const amountSpentWeekly = weeklyData.map(d => parseFloat(d.spent)); 
 
-  //Values to be used in legend
   const keys = ["Amount Spent", "Budget Goal"];
   const color = d3.scaleOrdinal().domain(keys).range(["steelblue", "orange"]);
 
-  // Scale for x axis
-  const xScale = d3.scaleTime() // Dealing with dates so this is more appropriate
-    .domain(d3.extent(weekLabels)) // Axis goes from earliest to latest date
+  const xScale = d3.scaleTime() 
+    .domain(d3.extent(weekLabels)) 
     .range([margin.left, width - margin.right]);
 
-  // Scale for y axis
-  const yScale = d3.scaleLinear() // Deals with numbers, so linear is appropriate
-    .domain([0, d3.max(amountSpentWeekly)]) // Axis goes from 0 to largest value
+  const yScale = d3.scaleLinear() 
+    .domain([0, d3.max(amountSpentWeekly)])
     .nice()
     .range([height - margin.bottom, margin.top]);
 
-  //Creates the line that represent the actual amount spent
   const line = d3.line()
-    .x((_, i) => xScale(weekLabels[i])) // x coordinate given by the dates
-    .y(d => yScale(d)); // y coordinate fiven by the spending
+    .x((_, i) => xScale(weekLabels[i])) 
+    .y(d => yScale(d)); 
 
-  // Creates line that represents user's budgeting goal
-  const budgetLineY = yScale(Number(userBudget)); //Simple straight line that goes across y axis
+  const budgetLineY = yScale(Number(userBudget)); 
 
-  // Add axes only after the component is mounted
   useEffect(() => {
     const svg = d3.select(svgRef.current);
 
-    // X-axis
     svg.select(".x-axis")
       .attr("transform", `translate(0, ${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(6).tickFormat(d3.timeFormat("%b %d")));
 
-    // Y-axis
     svg.select(".y-axis")
       .attr("transform", `translate(${margin.left}, 0)`)
       .call(d3.axisLeft(yScale));
 
-    //draws in the legend
       const legend = svg.selectAll(".legend")
       .data(keys)
       .enter()
@@ -79,10 +66,9 @@ function LineGraph({ userData, userBudget }) {
       .text(d => d);
 
 
-  }, [xScale, yScale, weekLabels]); //If any of these chage the code is ran again.
+  }, [xScale, yScale, weekLabels]); 
 
   return (
-    //Returns the svg element
     <svg ref={svgRef} width={width} height={height}>
 
       {/* Line Path */}
@@ -111,7 +97,6 @@ function LineGraph({ userData, userBudget }) {
         strokeWidth="2"
       />
 
-      {/* Axes Groups */}
       <g className="x-axis" />
       <g className="y-axis" />
     </svg>

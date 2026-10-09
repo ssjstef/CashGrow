@@ -25,7 +25,7 @@ function Uploader(){
 
 
     const fileChange = (e) =>{
-        setFile(e.target.files[0]); //Changes the file to the one the user entered
+        setFile(e.target.files[0]); //User inputted file
     };
 
     const handleUpload = async () => {
@@ -50,7 +50,6 @@ function Uploader(){
         }
     }
 
-    //handles user's manual input of a transaction
     const handleSubmit = async(e) => {
         e.preventDefault();
 
@@ -95,7 +94,6 @@ function Uploader(){
       </button>
 
       <div className={styles.contentBox}>
-        {/* CSV Upload Section */}
         <div className={styles.csvArea}>
           <h2>Upload Your CSV</h2>
           {/* The input field will only accept csv files  */}
@@ -103,7 +101,6 @@ function Uploader(){
           <button onClick={handleUpload}>Upload CSV</button>
         </div>
 
-        {/* Manual Form Entry Section */}
         <div className={styles.formContainer}>
           <h2>Manual Entry</h2>
           <div className={styles.signUpBox}>
